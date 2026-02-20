@@ -31,10 +31,9 @@ Check .env.example for required variables
 ```
 ### 3. Deployed links for both 
 ```bash
-android: https://expo.dev/preview/update?message=fix+design+issues+deployment+10&updateRuntimeVersion=1.0.0&createdAt=2026-02-20T12%3A26%3A00.878Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=a2a4477b-9080-4db1-a66b-856b0565ab58
+android: https://expo.dev/preview/update?message=fix+design+issues+deployment+11&updateRuntimeVersion=1.0.0&createdAt=2026-02-20T23%3A21%3A36.129Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=933fe486-b64b-4d37-a25c-337521ebfc16
 
-ios:https://expo.dev/preview/update?message=fix+design+issues+deployment+10&updateRuntimeVersion=1.0.0&createdAt=2026-02-20T12%3A30%3A37.788Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=00d15081-7943-4209-87cd-c68aeee96d46  (replace with actual link)
-```
+ios:https://expo.dev/preview/update?message=fix+design+issues+deployment+11&updateRuntimeVersion=1.0.0&createdAt=2026-02-20T23%3A19%3A17.353Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=db07c3dc-41cb-4cc7-8b37-77ded8e583c7
 
 
 

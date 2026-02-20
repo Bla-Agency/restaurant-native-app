@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.light.tailorBlue,
         borderRadius: Space.lg,
         paddingHorizontal: Space.lg,
-        paddingVertical: Space.md,
+        paddingVertical: Platform.OS === 'ios' ? Space.xl : Space.md,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: -4 },
         shadowOpacity: 0.1,

@@ -11,9 +11,10 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/Button';
 import { Colors, CornorRadius, Space } from '@/constants/theme';
 import { useFavorites } from '@/hooks/useFavorites';
+import { getUser } from '@/storage/auth';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -44,6 +45,22 @@ export default function RestaurantDetailScreen() {
   const [selectedReviewId, setSelectedReviewId] = useState<string | null>(null);
   const [editingReview, setEditingReview] = useState<Comment | null>(null);
 
+
+
+  const [name, setUsername] = useState<string>('');
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUser();
+      if (user) {
+        const userData = JSON.parse(user);
+        console.log("USER DATA:", userData);
+        setUsername(userData.name);
+      }
+    };
+    fetchUser();
+  }, []);
+  console.log("USER NAME:", name);
+
   useLayoutEffect(() => {
     // Remove the native header; we render controls on the hero image.
     (navigation as any)?.setOptions?.({ headerShown: false });
@@ -54,14 +71,14 @@ export default function RestaurantDetailScreen() {
     setCommentError(null);
     setValidationError(null);
     const comment = commentText.trim();
-    
+
     let hasError = false;
-    
+
     if (!rating || rating < 1 || rating > 5) {
       setRatingError('Por favor selecciona una valoración de 1 a 5 estrellas.');
       hasError = true;
     }
-    
+
     if (comment.length < 10) {
       setCommentError('El comentario debe tener al menos 10 caracteres.');
       hasError = true;
@@ -69,11 +86,11 @@ export default function RestaurantDetailScreen() {
       setCommentError('El comentario no puede superar 255 caracteres.');
       hasError = true;
     }
-    
+
     if (hasError) {
       return;
     }
-    
+
     createComment.mutate(
       { comment, rating },
       {
@@ -174,14 +191,14 @@ export default function RestaurantDetailScreen() {
           <View style={styles.reviewBox}>
 
             <View style={styles.starsRow}>
-              <CustomStarRating 
-                rating={rating} 
-                size={24} 
+              <CustomStarRating
+                rating={rating}
+                size={24}
                 onRatingChange={(newRating) => {
                   setRating(newRating);
                   if (ratingError) setRatingError(null);
                   if (successMessage) setSuccessMessage(null);
-                }} 
+                }}
               />
             </View>
             {ratingError ? (
@@ -225,16 +242,44 @@ export default function RestaurantDetailScreen() {
               <ThemedText style={styles.noReviews}>Aún no hay reseñas.</ThemedText>
             ) : (
               reviews.map((review) => (
+                // <ReviewCard
+                //   key={review._id}
+                //   review={review}
+                //   isSelected={selectedReviewId === review._id}
+                //   onPress={() => setSelectedReviewId((id) => (id === review._id ? null : review._id))}
+                //   onEdit={() => setEditingReview(review)}
+                //   onDelete={() => handleDelete(review._id)}
+                //   isDeleting={deleteCommentMutation.isPending}
+                // />
                 <ReviewCard
                   key={review._id}
                   review={review}
                   isSelected={selectedReviewId === review._id}
-                  onPress={() => setSelectedReviewId((id) => (id === review._id ? null : review._id))}
-                  onEdit={() => setEditingReview(review)}
-                  onDelete={() => handleDelete(review._id)}
+                  onPress={() => {
+                    // Close edit form if open, then handle selection
+                    if (editingReview) {
+                      setEditingReview(null);
+                    }
+                    if (review?.owner?.name === name) {
+                      setSelectedReviewId((id) =>
+                        id === review._id ? null : review._id
+                      );
+                    }
+                  }}
+                  onEdit={() => {
+                    if (review?.owner?.name === name) {
+                      setEditingReview(review);
+                    }
+                  }}
+                  onDelete={() => {
+                    if (review?.owner?.name === name) {
+                      handleDelete(review._id);
+                    }
+                  }}
                   isDeleting={deleteCommentMutation.isPending}
                 />
               ))
+
             )}
           </View>
 
@@ -268,7 +313,30 @@ function ReviewCard({
   onDelete: () => void;
   isDeleting: boolean;
 }) {
-  const displayName = review.name ?? review.userName ?? 'Anónimo';
+
+  const [username, setUsername] = useState<string>('');
+  const [dni, setDni] = useState<string>('');
+  const [direccion, setDireccion] = useState<string>('');
+  const [nacimiento, setNacimiento] = useState<string>('');
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUser();
+
+      console.log(user);
+      if (user) {
+        const userData = JSON.parse(user);
+        setUsername(userData.name);
+        setDni(userData.dni);
+        setDireccion(userData.direccion);
+        setNacimiento(userData.nacimiento);
+      }
+    };
+    fetchUser();
+  }, []);
+
+
+  const displayName = review.name ?? review.userName ?? username;
   const displayComment = review.comment ?? review.text ?? '';
   const displayDate = review.date ?? review.createdAt ?? '';
   const dateStr = displayDate
@@ -282,7 +350,7 @@ function ReviewCard({
   return (
     <TouchableOpacity style={styles.reviewCard} onPress={onPress} activeOpacity={0.8}>
       <View style={styles.reviewCardHeader}>
-        <ThemedText type='title' style={styles.reviewAuthor}>{displayName}</ThemedText>
+        <ThemedText type='title' style={styles.reviewAuthor}>{review?.owner?.name}</ThemedText>
 
       </View>
       <View style={styles.reviewStarsRow}>
@@ -328,14 +396,14 @@ function EditReviewForm({
     setCommentError(null);
     setError(null);
     const trimmedComment = comment.trim();
-    
+
     let hasError = false;
-    
+
     if (!rating || rating < 1 || rating > 5) {
       setRatingError('Por favor selecciona una valoración de 1 a 5 estrellas.');
       hasError = true;
     }
-    
+
     if (trimmedComment.length < 10) {
       setCommentError('El comentario debe tener al menos 10 caracteres.');
       hasError = true;
@@ -343,11 +411,11 @@ function EditReviewForm({
       setCommentError('El comentario no puede superar 255 caracteres.');
       hasError = true;
     }
-    
+
     if (hasError) {
       return;
     }
-    
+
     updateComment.mutate(
       { rating, comment: trimmedComment },
       {
@@ -366,13 +434,13 @@ function EditReviewForm({
     <View style={styles.reviewBox}>
       <ThemedText style={styles.reviewBoxTitle}>Editar reseña</ThemedText>
       <View style={styles.reviewStarsRow}>
-        <CustomStarRating 
-          rating={rating} 
-          size={24} 
+        <CustomStarRating
+          rating={rating}
+          size={24}
           onRatingChange={(newRating) => {
             setRating(newRating);
             if (ratingError) setRatingError(null);
-          }} 
+          }}
         />
       </View>
       {ratingError ? <ThemedText style={styles.validationError}>{ratingError}</ThemedText> : null}
@@ -381,10 +449,10 @@ function EditReviewForm({
         placeholder="Comentario (10-255 caracteres)"
         placeholderTextColor="#999"
         value={comment}
-        onChangeText={(t) => { 
-          setComment(t); 
+        onChangeText={(t) => {
+          setComment(t);
           if (commentError) setCommentError(null);
-          if (error) setError(null); 
+          if (error) setError(null);
         }}
         multiline
         numberOfLines={3}

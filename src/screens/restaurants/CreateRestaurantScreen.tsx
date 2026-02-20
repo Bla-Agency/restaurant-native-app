@@ -385,7 +385,7 @@ export default function CreateRestaurantScreen() {
                   }}
                   onFail={(error) => console.error('Autocomplete Error:', error)}
                   query={{
-                    key: 'AIzaSyDJmyIuXn00Mc1xlF4eVBQcZ5OT-wAsux4',
+                    key: process.env.EXPO_PUBLIC_API_KEY,
                     language: 'es',
                   }}
                   debounce={400}

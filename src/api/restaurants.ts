@@ -12,7 +12,10 @@ export type Comment = {
   userName?: string;
   /** API may return 'name' (e.g. "Maria Lopez") */
   name?: string;
-  owner?: string;
+  owner?:{
+    _id: string;
+    name: string;
+  },
   text?: string;
   /** API may return 'comment' for the review text */
   comment?: string;

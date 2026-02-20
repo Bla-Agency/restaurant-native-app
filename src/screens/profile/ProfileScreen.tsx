@@ -57,6 +57,7 @@ export default function ProfileScreen() {
       const user = await getUser();
       if (user) {
         const userData = JSON.parse(user);
+        console.log(userData);
         setUsername(userData.name);
         setDni(userData.dni);
         setDireccion(userData.direccion);
