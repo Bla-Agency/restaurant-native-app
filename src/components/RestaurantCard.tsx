@@ -159,8 +159,8 @@ const styles = StyleSheet.create({
     // remove top padding so heart aligns to top
     paddingTop: 0,
     paddingRight: 0,
-    paddingLeft: 8,
-    paddingBottom: 8,
+    paddingLeft: Space.s,
+    paddingBottom: Space.s,
   },
   image: {
     width: 80,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   infoMap: {
-    padding: 0,
+    padding: Space.xs,
   },
   name: {
     fontSize: 16,
