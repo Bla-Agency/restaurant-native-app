@@ -53,6 +53,7 @@ export type Restaurant = {
   address?: string;
   avgRating?: number;
   name: string;
+  owner: string;
   description: string;
   reviews: Comment[];
   location?: {

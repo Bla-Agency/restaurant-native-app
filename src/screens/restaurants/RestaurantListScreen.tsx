@@ -8,11 +8,12 @@ import type { Restaurant } from '@/types/index';
 import { MapIcon } from '@/utils/svgs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Animated, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { getUser } from '../../storage/auth';
 const PAGE_SIZE = 10;
 const MAP_CARD_WIDTH = 260;
 const MAP_CARD_MARGIN = 10;
@@ -35,6 +36,25 @@ export default function RestaurantListScreen() {
   const [page, setPage] = useState(1);
   const [selectedMarkerId, setSelectedMarkerId] = useState<string | null>(null);
   const { data, isLoading, error, isFetching } = useRestaurantsQuery(page, PAGE_SIZE);
+ const [userId, setUserId] = useState<string>('');
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUser();
+      if (user) {
+        const userData = JSON.parse(user);
+        console.log("USER DATA:", userData);
+        console.log("USER ID:", userData._id);
+        console.log("USER EMAIL:", userData.email);
+        setUserId(userData._id);
+      }
+    };
+    fetchUser();
+  }, []);
+  console.log("data", data);
+  console.log("userId", userId);
+
+
+
   const navigation = useNavigation();
   const deleteRestaurant = useDeleteRestaurantMutation();
   const { isFavorite, toggleFavorite } = useFavorites();
@@ -62,12 +82,19 @@ export default function RestaurantListScreen() {
     );
   };
 
-  const renderRightActions = (_progress: Animated.AnimatedInterpolation<number>, _dragX: Animated.AnimatedInterpolation<number>, item: Restaurant) => (
+  const renderRightActions = (_progress: Animated.AnimatedInterpolation<number>, _dragX: Animated.AnimatedInterpolation<number>, item: Restaurant) => {
+  // Only show swipe actions if user owns the restaurant
+  if (item.owner !== userId) {
+    return null;
+  }
+
+  return (
     <View style={styles.swipeActionsRow}>
       <RectButton
         style={[styles.swipeActionBtn, styles.swipeActionEdit]}
         onPress={() => {
           swipeableRefs.current.get(item._id)?.close();
+          console.log("Navigating to EditRestaurant with ID:", item._id, "Type:", typeof item._id);
           (navigation as any).navigate('EditRestaurant', { id: item._id });
         }}
       >
@@ -83,6 +110,7 @@ export default function RestaurantListScreen() {
       </RectButton>
     </View>
   );
+};
   const renderListItem = ({ item }: { item: Restaurant }) => (
     <Swipeable
       ref={(ref) => { if (ref) swipeableRefs.current.set(item._id, ref); }}

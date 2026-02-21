@@ -70,7 +70,11 @@ export function BackArrow({ width = 28, height = 28 }) {
 export function LocationIcon({
   width = 32,
   height = 32,
-  color = "#fff",
+  color,
+}: {
+  width?: number;
+  height?: number;
+  color?: string;
 }) {
   return (
     <Svg
@@ -90,9 +94,9 @@ export function LocationIcon({
 }
 
 
-export const HeartIcon = ({ color = "#111827", size = 32 }) => (
+export const HeartIcon = ({ color, size = 32 }: { color?: string; size?: number }) => (
   <Svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-    <G opacity={0.35}>
+    <G>
       <Path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -104,9 +108,9 @@ export const HeartIcon = ({ color = "#111827", size = 32 }) => (
 );
 
 
-export const PeopleIcon = ({ color = "#0B0B0B", size = 32 }) => (
+export const PeopleIcon = ({ color, size = 32 }: { color?: string; size?: number }) => (
   <Svg width={size} height={size} viewBox="0 0 32 32" fill="none">
-    <G opacity={0.35}>
+    <G>
       <Path
         fillRule="evenodd"
         clipRule="evenodd"

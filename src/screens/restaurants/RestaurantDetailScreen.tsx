@@ -344,14 +344,22 @@ function ReviewCard({
       <ThemedText style={styles.reviewComment}>{displayComment}</ThemedText>
       {isSelected && (
         <View style={styles.reviewActions}>
-          <Button title="Editar" variant="outline" onPress={onEdit} style={styles.reviewActionBtn} />
-          <Button
-            title="Eliminar"
-            variant="outline"
-            onPress={onDelete}
-            loading={isDeleting}
-            style={styles.reviewActionBtn}
-          />
+<Button
+              title="Editar"
+              onPress={onEdit}
+              variant="outline"
+              style={styles.actionButtons}
+            />
+            <Button
+              title="Eliminar"
+              onPress={onDelete}
+              variant="outline"
+              style={styles.actionButtons}
+            />
+
+          
+           
+          
         </View>
       )}
     </TouchableOpacity>
@@ -573,13 +581,17 @@ const styles = StyleSheet.create({
   reviewStarsRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 6, justifyContent: 'flex-end' },
   reviewAuthor: { fontSize: 16, fontWeight: '600' },
   reviewDate: { fontSize: 12, color: '#888', marginBottom: 6 },
-  reviewComment: { fontSize: 16, lineHeight: 20, color: '#333', marginVertical: 12, fontFamily: 'Robert-R' },
-  reviewActions: { flexDirection: 'row', gap: 10 },
+  reviewComment: { fontSize: 16, lineHeight: 20, color: Colors.light.black, marginVertical: 12, fontFamily: 'Robert-R',fontWeight:400 },
+  reviewActions: { flexDirection: 'row', gap: 10, justifyContent: 'flex-end' },
   reviewActionBtn: { flex: 1 },
   editFormActions: { flexDirection: 'row', gap: 10 },
   editFormBtn: { flex: 1 },
   submitBtton: {
     alignSelf: 'flex-start',
-    borderRadius: 12, paddingHorizontal: 30, paddingVertical: 8, width: 'auto'
+    borderRadius: 17, paddingHorizontal: 30, paddingVertical: 8, width: 'auto'
+  },
+  actionButtons: {
+    alignSelf: "flex-end",
+    borderRadius: 17, paddingHorizontal: 30, paddingVertical: 8, width: 'auto'
   }
 });
