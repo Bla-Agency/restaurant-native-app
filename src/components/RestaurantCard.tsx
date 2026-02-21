@@ -1,4 +1,3 @@
-import { Restaurant } from '@/api/restaurants';
 import { ThemedText } from '@/components/themed-text';
 import { Colors, Space } from '@/constants/theme';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -10,25 +9,15 @@ import {
   Text,
   TouchableOpacity,
   View,
-  type StyleProp,
-  type ViewStyle,
 } from 'react-native';
+import type { RestaurantCardProps } from '../types/index';
 import { CustomStarRating } from './CustomStarRating';
 
-const GOOGLE_GEOCODE_KEY = 'AIzaSyDJmyIuXn00Mc1xlF4eVBQcZ5OT-wAsux4';
+const GOOGLE_GEOCODE_KEY = process.env.EXPO_PUBLIC_API_KEY;
 
-type Props = {
-  data: Restaurant;
-  isFavorite: boolean;
-  hideComments?: boolean;
-  variant?: 'default' | 'map';
-  onToggleFavorite: (restaurant: Restaurant) => void;
-  onPress?: () => void;
-  containerStyle?: StyleProp<ViewStyle>;
-  cardStyle?: StyleProp<ViewStyle>;
-};
 
-export const RestaurantCard = ({ data, isFavorite, hideComments, variant = 'default', onToggleFavorite, onPress, containerStyle, cardStyle }: Props) => {
+
+export const RestaurantCard = ({ data, isFavorite, hideComments, variant = 'default', onToggleFavorite, onPress, containerStyle, cardStyle }: RestaurantCardProps) => {
   const navigation = useNavigation();
   const [resolvedAddress, setResolvedAddress] = useState<string | null>(null);
 
@@ -176,7 +165,7 @@ const styles = StyleSheet.create({
   },
   info: {
     flex: 1,
-    padding: 8,
+    padding: Space.s,
     justifyContent: 'center',
   },
   infoMap: {
@@ -204,6 +193,6 @@ const styles = StyleSheet.create({
   favoriteContainerMap: {
     width: 44,
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'center',  
   },
 });

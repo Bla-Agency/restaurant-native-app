@@ -1,10 +1,10 @@
-import type { Restaurant } from '@/api/restaurants';
 import { useDeleteRestaurantMutation, useRestaurantsQuery } from '@/api/restaurants';
 import { RestaurantCard } from '@/components/RestaurantCard';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors, CornorRadius, Space } from '@/constants/theme';
 import { useFavorites } from '@/hooks/useFavorites';
+import type { Restaurant } from '@/types/index';
 import { MapIcon } from '@/utils/svgs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
@@ -261,7 +261,6 @@ export default function RestaurantListScreen() {
                           onToggleFavorite={() => toggleFavorite(restaurant)}
                           onPress={() => {
                             setSelectedMarkerId(restaurant._id);
-                            (navigation as any).navigate('RestaurantDetail', { id: restaurant._id });
                           }}
                           containerStyle={styles.mapCardContainerOverride}
                           cardStyle={[styles.mapCardCardOverride, isSelected && styles.mapCardSelected]}
@@ -287,7 +286,24 @@ export default function RestaurantListScreen() {
                         isFavorite={isFavorite(restaurant._id)}
                         onToggleFavorite={() => toggleFavorite(restaurant)}
                         onPress={() => {
-                          (navigation as any).navigate('RestaurantDetail', { id: restaurant._id });
+                          setSelectedMarkerId(restaurant._id);
+                          // Center map on selected restaurant
+                          const idx = restaurantList.findIndex((r) => r._id === restaurant._id);
+                          if (idx >= 0 && mapCardsScrollRef.current) {
+                            mapCardsScrollRef.current.scrollTo({
+                              x: idx * (MAP_CARD_WIDTH + MAP_CARD_MARGIN),
+                              animated: true,
+                            });
+                          }
+                          // Animate map to restaurant location
+                          if (mapRef.current && restaurant.latlng) {
+                            mapRef.current.animateToRegion({
+                              latitude: restaurant.latlng.lat,
+                              longitude: restaurant.latlng.lng,
+                              latitudeDelta: 0.0922,
+                              longitudeDelta: 0.0421,
+                            }, 1000);
+                          }
                         }}
                         containerStyle={styles.mapCardContainerOverride}
                         cardStyle={styles.mapCardCardOverride}
@@ -354,7 +370,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 8,
+    paddingHorizontal: 6,
   },
   swipeActionEdit: {
     backgroundColor: Colors.light.tailorBlue,

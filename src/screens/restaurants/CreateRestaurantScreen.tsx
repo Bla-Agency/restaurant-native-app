@@ -72,12 +72,6 @@ export default function CreateRestaurantScreen() {
 
   const createMutation = useCreateRestaurantMutation();
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerShown: viewState === 'form',
-  //   });
-  // }, [navigation, viewState]);
-
   // Disable VirtualizedList nesting warning (GooglePlacesAutocomplete uses FlatList inside our ScrollView)
   useEffect(() => {
     LogBox.ignoreLogs([

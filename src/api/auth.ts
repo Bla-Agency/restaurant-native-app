@@ -1,25 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { AuthResponse, LoginCredentials, SignupCredentials } from '../types/index';
 import api from './client';
-
-export type LoginCredentials = {
-  email: string;
-  password: string;
-};
-
-export type SignupCredentials = {
-  email: string;
-  password: string;
-  name: string;
-};
-
-export type AuthResponse = {
-  token: string;
-  user: {
-    _id: string;
-    email: string;
-    name: string;
-  };
-};
 
 async function login(credentials: LoginCredentials): Promise<AuthResponse> {
   const response = await api.post<AuthResponse>('/auth/login', credentials);

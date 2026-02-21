@@ -28,8 +28,11 @@ Create `.env` file in project root:
 ```env
 You need a google api key to use the location feature in create restaurant page
 Check .env.example for required variables
+
+
 ```
-### 3. Deployed links for both 
+### 3. Deployed links for both
+### Note. Safe way to check latest design always run project on machine and scan a qr because deployed links may not reflect latest changes
 ```bash
 android: https://expo.dev/preview/update?message=fix+design+issues+deployment+11&updateRuntimeVersion=1.0.0&createdAt=2026-02-20T23%3A21%3A36.129Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=933fe486-b64b-4d37-a25c-337521ebfc16
 
@@ -135,13 +138,36 @@ This project was developed with assistance from AI tools to accelerate developme
 
 ### Claude AI (Anthropic)
 - **Map Integration**: Implemented Google Maps integration with custom markers, map cards overlay, and marker selection synchronization
-- **Root Navigator Setup**: Properly configured AuthStack and AppStack navigation structure with authentication state management
+- **Root Navigator Setup**: Properly configured AuthStack and AppStack navigation structure
 - **Context Handling**: Resolved authentication context issues and ensured proper state management across the app
 
 ### ChatGPT (OpenAI)
 - **Bottom Tab Navigator**: Solved hidden tab issue in the bottom tab navigator, ensuring proper tab visibility and functionality
 
 These AI tools were used as development assistants to accelerate implementation and resolve specific technical challenges, with all code reviewed and integrated into the final application.
+
+## Technology Stack
+
+### Data Fetching & State Management
+- **React Query (@tanstack/react-query)**: Efficient server state management, caching, and background updates
+- **Axios**: HTTP client for API requests with automatic token injection
+- **TypeScript**: Type-safe API interfaces and response handling
+
+### Navigation
+- **React Navigation**: Declarative navigation with conditional routing
+- **Expo Router**: File-based routing system for React Native
+- **Safe Area Context**: Proper handling of device notches and safe areas
+
+### Authentication & Storage
+- **AsyncStorage**: Persistent local storage for tokens and user data
+- **JWT (JSON Web Tokens)**: Stateless authentication with bearer tokens
+- **Axios Interceptors**: Automatic token attachment to all API requests
+
+### UI & Styling
+- **React Native**: Cross-platform mobile development framework
+- **Expo SDK**: Development platform and build tools
+- **React Native Maps**: Google Maps integration with custom markers
+- **React Native SVG**: Scalable vector graphics for icons and UI elements
 
 ## Support
 For issues:

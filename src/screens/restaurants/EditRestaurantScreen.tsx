@@ -322,14 +322,7 @@ export default function EditRestaurantScreen() {
             {errors.location ? <Text style={styles.fieldError}>{errors.location}</Text> : null}
 
             <View style={styles.formSection}>
-              {/* <ThemedText style={styles.label}>Descripción del restaurante</ThemedText>
-              <TextInput
-                style={[styles.input, styles.textArea, errors.description && styles.inputError]}
-                value={description}
-                onChangeText={(t) => { setDescription(t); clearFieldError('description'); }}
-                placeholder="Breve descripción del restaurante"
-                multiline
-              /> */}
+            
               <TextField
                 title="Descripción del restaurante"
                 value={description}

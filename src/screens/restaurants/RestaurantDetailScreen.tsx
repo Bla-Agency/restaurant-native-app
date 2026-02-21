@@ -1,4 +1,3 @@
-import type { Comment } from '@/api/restaurants';
 import {
   useCreateCommentMutation,
   useDeleteCommentMutation,
@@ -12,6 +11,7 @@ import { Button } from '@/components/ui/Button';
 import { Colors, CornorRadius, Space } from '@/constants/theme';
 import { useFavorites } from '@/hooks/useFavorites';
 import { getUser } from '@/storage/auth';
+import type { Comment } from '@/types/index';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
@@ -59,10 +59,8 @@ export default function RestaurantDetailScreen() {
     };
     fetchUser();
   }, []);
-  console.log("USER NAME:", name);
 
   useLayoutEffect(() => {
-    // Remove the native header; we render controls on the hero image.
     (navigation as any)?.setOptions?.({ headerShown: false });
   }, [navigation]);
 
@@ -242,15 +240,6 @@ export default function RestaurantDetailScreen() {
               <ThemedText style={styles.noReviews}>Aún no hay reseñas.</ThemedText>
             ) : (
               reviews.map((review) => (
-                // <ReviewCard
-                //   key={review._id}
-                //   review={review}
-                //   isSelected={selectedReviewId === review._id}
-                //   onPress={() => setSelectedReviewId((id) => (id === review._id ? null : review._id))}
-                //   onEdit={() => setEditingReview(review)}
-                //   onDelete={() => handleDelete(review._id)}
-                //   isDeleting={deleteCommentMutation.isPending}
-                // />
                 <ReviewCard
                   key={review._id}
                   review={review}
@@ -283,7 +272,7 @@ export default function RestaurantDetailScreen() {
             )}
           </View>
 
-          {/* Edit review form (same UI as create, with Update button) */}
+          {/* Edit review form */}
           {editingReview && (
             <EditReviewForm
               review={editingReview}
@@ -315,9 +304,7 @@ function ReviewCard({
 }) {
 
   const [username, setUsername] = useState<string>('');
-  const [dni, setDni] = useState<string>('');
-  const [direccion, setDireccion] = useState<string>('');
-  const [nacimiento, setNacimiento] = useState<string>('');
+ 
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -327,16 +314,13 @@ function ReviewCard({
       if (user) {
         const userData = JSON.parse(user);
         setUsername(userData.name);
-        setDni(userData.dni);
-        setDireccion(userData.direccion);
-        setNacimiento(userData.nacimiento);
       }
     };
     fetchUser();
   }, []);
 
 
-  const displayName = review.name ?? review.userName ?? username;
+
   const displayComment = review.comment ?? review.text ?? '';
   const displayDate = review.date ?? review.createdAt ?? '';
   const dateStr = displayDate
