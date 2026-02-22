@@ -69,8 +69,7 @@ npx expo start
 
 ### Known Backend Issues
 The following are known backend API issues that may affect app functionality:
-- **Edit Restaurant API**: The edit restaurant endpoint is not working properly
-- **Comment Names**: User names are not showing on comments due to backend data structure
+
 - **Status Bar**: Status bar icons may not appear on some Android emulators
 
 ### Status Bar Not Visible

@@ -7,6 +7,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/Button';
 import { TextField } from '@/components/ui/TextField';
+import { CornorRadius, Space } from '@/constants/theme';
 import { StarIcon } from '@/utils/svgs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -16,6 +17,7 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Keyboard,
   KeyboardAvoidingView,
   LogBox,
   Platform,
@@ -56,6 +58,7 @@ export default function EditRestaurantScreen() {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const placesRef = useRef<any>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
@@ -80,6 +83,21 @@ export default function EditRestaurantScreen() {
       'VirtualizedLists should never be nested',
       'VirtualizedLists should never be nested inside plain ScrollViews',
     ]);
+  }, []);
+
+  // Handle keyboard appearance to scroll focused inputs into view
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      // Small delay to ensure input is focused
+      setTimeout(() => {
+        // Scroll to bottom when keyboard appears
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    });
+
+    return () => {
+      keyboardDidShowListener.remove();
+    };
   }, []);
 
   useEffect(() => {
@@ -206,6 +224,7 @@ export default function EditRestaurantScreen() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top : 0}
       >
         <ScrollView
+          ref={scrollViewRef}
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContainer}
           keyboardShouldPersistTaps="handled"
@@ -357,7 +376,7 @@ const styles = StyleSheet.create({
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   keyboardAvoid: { flex: 1 },
   scrollView: { flex: 1 },
-  scrollContainer: { flexGrow: 1, paddingBottom: 60 },
+  scrollContainer: { flexGrow: 1, paddingBottom: Platform.OS === 'ios' ? Space.md: Space.s },
   container: { padding: 20, paddingBottom: 40 },
   title: { fontSize: 28, fontWeight: 'bold', marginBottom: 20 },
   formSection: { width: '100%', marginBottom: 24 },
@@ -376,15 +395,15 @@ const styles = StyleSheet.create({
   fieldError: { color: '#FF3B30', fontSize: 13, marginTop: 4, marginBottom: 4 },
   textArea: { height: 100, textAlignVertical: 'top' },
   autocompleteWrapper: { zIndex: 1000, elevation: 5, marginBottom: 10 },
-  autocompleteError: { borderWidth: 1.5, borderColor: '#FF3B30', borderRadius: 25 },
+  autocompleteError: { borderWidth: 1.5, borderColor: '#FF3B30', borderRadius: CornorRadius.CornorRadius },
   // Google Places field styled to match `TextField`
   placesFieldContainer: { width: '100%', gap: 12, marginTop: 10 },
   placesFieldTitle: { fontSize: 24 },
   placesFieldInput: {
     fontSize: 24,
-    paddingHorizontal: 16,
+    paddingHorizontal: Space.md,
     paddingVertical: 12,
-    borderRadius: 25,
+    borderRadius: CornorRadius.CornorRadius,
     borderWidth: 1,
     borderColor: '#000',
     backgroundColor: 'transparent',
@@ -396,7 +415,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: 204,
     height: 204,
-    borderRadius: 24,
+    borderRadius: CornorRadius.CornorRadius,
     backgroundColor: '#e5e7eb',
     overflow: 'hidden',
     position: 'relative',
@@ -404,7 +423,7 @@ const styles = StyleSheet.create({
     borderColor: '#000',
   },
   imagePickButton: { width: '100%', height: '100%' },
-  previewImage: { width: '100%', height: '100%', borderRadius: 24 },
+  previewImage: { width: '100%', height: '100%', borderRadius: CornorRadius.CornorRadius },
   imagePlaceholder: { width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' },
   imagePlaceholderText: { marginTop: 8, color: '#264BEB', fontWeight: '600' },
   removeImageButton: {
@@ -416,7 +435,7 @@ const styles = StyleSheet.create({
     borderColor: '#fff',
     borderWidth: 1,
     paddingVertical: 12,
-    borderRadius: 25,
+    borderRadius: CornorRadius.CornorRadius,
     alignItems: 'center',
     justifyContent: 'center',
     width: '90%',
@@ -430,14 +449,14 @@ const styles = StyleSheet.create({
     marginTop: 56,
     marginBottom: 20,
     backgroundColor: '#fff',
-    borderRadius: 25,
+    borderRadius: CornorRadius.CornorRadius,
     borderWidth: 1,
     borderColor: '#000',
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
   topLogoContainer: {
-    padding: 16,
+    padding: Space.md,
     paddingTop: 0,
     justifyContent: 'center',
     alignItems: 'center',

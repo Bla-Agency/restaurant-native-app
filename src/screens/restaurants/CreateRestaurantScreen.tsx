@@ -4,7 +4,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Button } from '@/components/ui/Button';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { TextField } from '@/components/ui/TextField';
-import { Colors, Space } from '@/constants/theme';
+import { Colors, CornorRadius, Space } from '@/constants/theme';
 import { StarIcon } from '@/utils/svgs';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -315,9 +315,6 @@ export default function CreateRestaurantScreen() {
 
             }
 
-
-
-
             {/* 1. Image on top */}
             <View style={styles.imageContainerWrapper}>
               <View style={[styles.imageContainer, errors.image && styles.inputError]}>
@@ -491,7 +488,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: 60,
+    paddingBottom: Platform.OS === 'ios' ? Space.md : Space.s,
   },
   container: {
     padding: Space.md,
@@ -516,8 +513,8 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: '#f8f9fa',
-    borderRadius: 24,
-    padding: 24,
+    borderRadius: CornorRadius.CornorRadius,
+    padding: Space.lg,
     fontSize: 16,
     borderWidth: 1,
     borderColor: '#000',
@@ -558,7 +555,7 @@ const styles = StyleSheet.create({
   autocompleteError: {
     borderWidth: 1.5,
     borderColor: '#FF3B30',
-    borderRadius: 25,
+    borderRadius: CornorRadius.CornorRadius,
   },
   // Google Places field styled to match `TextField`
   placesFieldContainer: {
@@ -573,7 +570,7 @@ const styles = StyleSheet.create({
   },
   placesFieldInput: {
     fontSize: 24,
-    paddingHorizontal: 16,
+    paddingHorizontal: Space.md,
     paddingVertical: 12,
     borderRadius: 25,
     borderWidth: 1,
@@ -641,7 +638,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: Space.lg,
   },
   resultTitle: {
     color: Colors.light.tailorBlue,
@@ -655,27 +652,27 @@ const styles = StyleSheet.create({
     color: '#687076',
     textAlign: 'center',
     marginBottom: 24,
-    paddingHorizontal: 16,
+    paddingHorizontal: Space.md,
   },
   resultButton: {
     marginTop: 24,
     width: '100%',
   },
   topLogoContainer: {
-    padding: 16,
+    padding: Space.md,
     paddingTop: 0,
     justifyContent: 'center',
     alignItems: 'center',
   },
   logoContainer: {
-    padding: 24,
+    padding: Space.lg,
     justifyContent: 'center',
     alignItems: 'center',
   },
   imageContainer: {
     width: 204,
     height: 204,
-    borderRadius: 24,
+    borderRadius: CornorRadius.CornorRadius,
     backgroundColor: '#e5e7eb',
     borderWidth: 1,
     borderColor: '#000',

@@ -476,12 +476,12 @@ const styles = StyleSheet.create({
   },
   keyboardView: { flex: 1 },
   scroll: { flex: 1 },
-  scrollContent: { paddingBottom: 24 },
+  scrollContent: { paddingBottom: Space.lg },
   heroWrap: {
     position: 'relative',
     width: '100%',
     height: 220,
-    borderRadius: 24,
+    borderRadius: CornorRadius.CornorRadius,
     overflow: 'hidden',
   },
   heroImage: {
@@ -509,11 +509,12 @@ const styles = StyleSheet.create({
     borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.35)',
+    backgroundColor: '#F1F1F04D',
+    
   },
   heroCenter: {
     ...StyleSheet.absoluteFillObject,
-    paddingHorizontal: 16,
+    paddingHorizontal: Space.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -534,8 +535,8 @@ const styles = StyleSheet.create({
   reviewBox: {
 
     marginVertical: 24,
-    padding: 12,
-    borderRadius: 16,
+    padding: Space.md,
+    borderRadius: CornorRadius.CornorRadius,
     borderWidth: 1,
     borderColor: '#e0e0e0',
   },
