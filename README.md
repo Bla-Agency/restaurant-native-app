@@ -34,10 +34,10 @@ Check .env.example for required variables
 ### 3. Deployed links for both
 ### Note. Safe way to check latest design always run project on machine and scan a qr because deployed links may not reflect latest changes
 ```bash
-android: https://expo.dev/preview/update?message=fix+design+issues+deployment+11&updateRuntimeVersion=1.0.0&createdAt=2026-02-20T23%3A21%3A36.129Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=933fe486-b64b-4d37-a25c-337521ebfc16
+android: https://expo.dev/preview/update?message=fix+design+issues+deployment+16&updateRuntimeVersion=1.0.0&createdAt=2026-02-22T22%3A41%3A01.425Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=30ce6212-52de-4aa1-99bd-2929833f41d9
 
-ios:https://expo.dev/preview/update?message=fix+design+issues+deployment+11&updateRuntimeVersion=1.0.0&createdAt=2026-02-20T23%3A19%3A17.353Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=db07c3dc-41cb-4cc7-8b37-77ded8e583c7
 
+ios:https://expo.dev/preview/update?message=fix+design+issues+deployment+16&updateRuntimeVersion=1.0.0&createdAt=2026-02-22T22%3A37%3A35.974Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=2c5a5831-c5da-4ba2-a478-8aaa8fdedade
 
 
 ### 3. Run Development Server
@@ -66,9 +66,6 @@ npx expo start
 4. Or connect physical iPhone via cable
 
 ## Common Issues & Solutions
-
-### Known Backend Issues
-The following are known backend API issues that may affect app functionality:
 
 - **Status Bar**: Status bar icons may not appear on some Android emulators
 
