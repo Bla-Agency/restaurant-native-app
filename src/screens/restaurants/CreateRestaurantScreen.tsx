@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Keyboard,
   KeyboardAvoidingView,
   LogBox,
   Platform,
@@ -55,6 +56,7 @@ type FieldErrors = {
 };
 
 export default function CreateRestaurantScreen() {
+  const scrollViewRef = useRef<ScrollView>(null);
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [description, setDescription] = useState('');
@@ -78,6 +80,21 @@ export default function CreateRestaurantScreen() {
       'VirtualizedLists should never be nested',
       'VirtualizedLists should never be nested inside plain ScrollViews',
     ]);
+  }, []);
+
+  // Handle keyboard appearance to scroll focused inputs into view
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      // Small delay to ensure input is focused
+      setTimeout(() => {
+        // Scroll to bottom when keyboard appears
+        scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    });
+
+    return () => {
+      keyboardDidShowListener.remove();
+    };
   }, []);
 
   const clearFieldError = (field: keyof FieldErrors) => {
@@ -282,6 +299,7 @@ export default function CreateRestaurantScreen() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top : 0}
       >
         <ScrollView
+          ref={scrollViewRef}
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContainer}
           keyboardShouldPersistTaps="handled"
@@ -291,7 +309,6 @@ export default function CreateRestaurantScreen() {
             {
               viewState === 'form' && (
                 <View style={styles.topLogoContainer}>
-
                   <StarIcon size={26} />
                 </View>
               )
