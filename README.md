@@ -36,7 +36,7 @@ EXPO_PUBLIC_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
 
 **Android**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+16&updateRuntimeVersion=1.0.0&createdAt=2026-02-22T22%3A41%3A01.425Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=30ce6212-52de-4aa1-99bd-2929833f41d9)
 
-**iOS**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+16&updateRuntimeVersion=1.0.0&createdAt=2026-02-22T22%3A37%3A35.974Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=2c5a5831-c5da-4ba2-a478-8aaa8fdedade)
+**iOS**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+18&updateRuntimeVersion=1.0.0&createdAt=2026-02-23T16%3A43%3A10.617Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=2f0cb726-f737-46f5-887e-a5853fc26223)
 
 ### 4. Run Development Server
 ```bash
