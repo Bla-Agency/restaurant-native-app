@@ -257,7 +257,6 @@ export default function RestaurantListScreen() {
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.iconButton} onPress={handleMapPress}>
             <MapIcon size={28} color={viewMode === 'map' ? '#000' : '#CCC'} />
-            {/* <Ionicons name="map-" size={24} color={viewMode === 'map' ? '#000' : '#CCC'} /> */}
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconButton} onPress={handleListPress}>
             <Ionicons name="list" size={24} color={viewMode === 'list' ? '#000' : '#CCC'} />
