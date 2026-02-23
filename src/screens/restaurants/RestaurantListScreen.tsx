@@ -9,14 +9,50 @@ import { MapIcon } from '@/utils/svgs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, Animated, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Animated, Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getUser } from '../../storage/auth';
 const PAGE_SIZE = 10;
-const MAP_CARD_WIDTH = 260;
+const MAP_CARD_WIDTH = 350;
 const MAP_CARD_MARGIN = 10;
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
+// Calculate initial region based on restaurant locations
+const getInitialRegion = (restaurants: Restaurant[]) => {
+  // Default to Madrid if no restaurants
+  if (!restaurants || restaurants.length === 0) {
+    return {
+      latitude: 40.4168,
+      longitude: -3.7038,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    };
+  }
+
+  // Find first restaurant with valid coordinates
+  const firstValid = restaurants.find(
+    (r) => r.latlng && r.latlng.lat !== undefined && r.latlng.lng !== undefined
+  );
+
+  if (firstValid && firstValid.latlng) {
+    return {
+      latitude: firstValid.latlng.lat,
+      longitude: firstValid.latlng.lng,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    };
+  }
+
+  // Fallback to Madrid
+  return {
+    latitude: 40.4168,
+    longitude: -3.7038,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  };
+};
 
 // Dark map style to match the app (background ~#1E242C)
 const DARK_MAP_STYLE = [
@@ -59,7 +95,7 @@ export default function RestaurantListScreen() {
   const deleteRestaurant = useDeleteRestaurantMutation();
   const { isFavorite, toggleFavorite } = useFavorites();
   const mapRef = useRef<MapView | null>(null);
-  const mapCardsScrollRef = useRef<ScrollView | null>(null);
+  const mapCardsScrollRef = useRef<FlatList<Restaurant> | null>(null);
   const swipeableRefs = useRef<Map<string, Swipeable | null>>(new Map());
   const total = data?.total ?? 0;
   const restaurantList = data?.restaurantList ?? [];
@@ -209,7 +245,7 @@ export default function RestaurantListScreen() {
             />
           </View>
         ) : (
-          <View style={[styles.mapContainer, { marginLeft: -insets.left, marginRight: -insets.right }]}>
+          <View style={styles.mapContainer}>
             <MapView
               style={StyleSheet.absoluteFill}
               provider={PROVIDER_GOOGLE}
@@ -217,12 +253,7 @@ export default function RestaurantListScreen() {
               showsUserLocation
               showsMyLocationButton
               ref={mapRef}
-              initialRegion={{
-                latitude: 40.4168,
-                longitude: -3.7038,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
+              initialRegion={getInitialRegion(restaurantList)}
             >
               {restaurantList.map((restaurant: Restaurant) => {
                 if (!restaurant.latlng || restaurant.latlng.lat === undefined || restaurant.latlng.lng === undefined) return null;
@@ -248,11 +279,17 @@ export default function RestaurantListScreen() {
                     anchor={{ x: 0.5, y: 1 }}
                     onPress={() => {
                       setSelectedMarkerId(restaurant._id);
-                      const idx = restaurantList.findIndex((r) => r._id === restaurant._id);
+                      // Find index in the filtered list (restaurants with location)
+                      const filteredList = restaurantList.filter(
+                        (r) => r.latlng && r.latlng.lat != null && r.latlng.lng != null
+                      );
+                      const idx = filteredList.findIndex((r) => r._id === restaurant._id);
                       if (idx >= 0 && mapCardsScrollRef.current) {
-                        mapCardsScrollRef.current.scrollTo({
-                          x: idx * (MAP_CARD_WIDTH + MAP_CARD_MARGIN),
+                        // Use FlatList's scrollToIndex to center the card
+                        mapCardsScrollRef.current.scrollToIndex({
+                          index: idx,
                           animated: true,
+                          viewPosition: 0.5, // Center the card
                         });
                       }
                     }}
@@ -262,51 +299,27 @@ export default function RestaurantListScreen() {
             </MapView>
             {/* Bottom overlay: horizontal scroll of restaurant cards */}
             <View style={styles.mapCardsOverlay} pointerEvents="box-none">
-              <ScrollView
+              <FlatList
                 ref={mapCardsScrollRef}
+                data={restaurantList.filter(
+                  (r) => r.latlng && r.latlng.lat != null && r.latlng.lng != null
+                )}
                 horizontal
                 showsHorizontalScrollIndicator={false}
+                keyExtractor={(item) => item._id}
                 contentContainerStyle={styles.mapCardsScrollContent}
-                style={styles.mapCardsScroll}
-              >
-                {/* First: restaurants with location (synced with markers) */}
-                {restaurantList
-                  .filter(
-                    (restaurant) =>
-                      restaurant.latlng &&
-                      restaurant.latlng.lat != null &&
-                      restaurant.latlng.lng != null
-                  )
-                  .map((restaurant) => {
-                    const isSelected = selectedMarkerId === restaurant._id;
-                    return (
-                      <View key={restaurant._id} style={styles.mapCardWrap}>
-                        <RestaurantCard
-                          data={restaurant}
-                          hideComments={true}
-                          variant="map"
-                          isFavorite={isFavorite(restaurant._id)}
-                          onToggleFavorite={() => toggleFavorite(restaurant)}
-                          onPress={() => {
-                            setSelectedMarkerId(restaurant._id);
-                          }}
-                          containerStyle={styles.mapCardContainerOverride}
-                          cardStyle={[styles.mapCardCardOverride, isSelected && styles.mapCardSelected]}
-                        />
-                      </View>
-                    );
-                  })}
-
-                {/* Then: restaurants without location (no marker, still shown as cards at the end) */}
-                {restaurantList
-                  .filter(
-                    (restaurant) =>
-                      !restaurant.latlng ||
-                      restaurant.latlng.lat == null ||
-                      restaurant.latlng.lng == null
-                  )
-                  .map((restaurant) => (
-                    <View key={restaurant._id} style={styles.mapCardWrap}>
+                snapToInterval={MAP_CARD_WIDTH + MAP_CARD_MARGIN}
+                snapToAlignment="center"
+                decelerationRate="fast"
+                getItemLayout={(data, index) => ({
+                  length: MAP_CARD_WIDTH + MAP_CARD_MARGIN,
+                  offset: (MAP_CARD_WIDTH + MAP_CARD_MARGIN) * index,
+                  index,
+                })}
+                renderItem={({ item: restaurant }) => {
+                  const isSelected = selectedMarkerId === restaurant._id;
+                  return (
+                    <View style={styles.mapCardWrap}>
                       <RestaurantCard
                         data={restaurant}
                         hideComments={true}
@@ -315,30 +328,22 @@ export default function RestaurantListScreen() {
                         onToggleFavorite={() => toggleFavorite(restaurant)}
                         onPress={() => {
                           setSelectedMarkerId(restaurant._id);
-                          // Center map on selected restaurant
-                          const idx = restaurantList.findIndex((r) => r._id === restaurant._id);
-                          if (idx >= 0 && mapCardsScrollRef.current) {
-                            mapCardsScrollRef.current.scrollTo({
-                              x: idx * (MAP_CARD_WIDTH + MAP_CARD_MARGIN),
-                              animated: true,
-                            });
-                          }
-                          // Animate map to restaurant location
                           if (mapRef.current && restaurant.latlng) {
                             mapRef.current.animateToRegion({
                               latitude: restaurant.latlng.lat,
                               longitude: restaurant.latlng.lng,
-                              latitudeDelta: 0.0922,
-                              longitudeDelta: 0.0421,
-                            }, 1000);
+                              latitudeDelta: 0.05,
+                              longitudeDelta: 0.05,
+                            }, 500);
                           }
                         }}
                         containerStyle={styles.mapCardContainerOverride}
-                        cardStyle={styles.mapCardCardOverride}
+                        cardStyle={[styles.mapCardCardOverride, isSelected && styles.mapCardSelected]}
                       />
                     </View>
-                  ))}
-              </ScrollView>
+                  );
+                }}
+              />
             </View>
           </View>
         )}
@@ -366,7 +371,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mapCardWrap: {
-    // width: MAP_CARD_WIDTH,
+    width: MAP_CARD_WIDTH,
     marginRight: MAP_CARD_MARGIN,
   },
   header: {
@@ -430,7 +435,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    paddingLeft: Space.s,
+    paddingLeft: 0,
     paddingBottom: Space.xxl,
     paddingTop: 12,
   },
@@ -438,12 +443,12 @@ const styles = StyleSheet.create({
     flexGrow: 0,
   },
   mapCardsScrollContent: {
-    // paddingRight: 12,
-    // paddingLeft: 4,
+    paddingHorizontal: (SCREEN_WIDTH - MAP_CARD_WIDTH) / 2,
   },
   mapCardContainerOverride: {
     marginBottom: 0,
     paddingHorizontal: 0,
+    width: MAP_CARD_WIDTH,
   },
   mapCardCardOverride: {
     borderWidth: 2,
