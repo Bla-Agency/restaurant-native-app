@@ -163,7 +163,40 @@ export default function RestaurantListScreen() {
     </Swipeable>
   );
 
-  const handleMapPress = () => setViewMode('map');
+  const filteredRestaurantList = restaurantList.filter(
+    (r) => r.latlng && r.latlng.lat != null && r.latlng.lng != null
+  );
+
+  const handleCardScroll = (index: number) => {
+    if (index >= 0 && index < filteredRestaurantList.length) {
+      const restaurant = filteredRestaurantList[index];
+      setSelectedMarkerId(restaurant._id);
+      // Animate map to the restaurant location
+      if (mapRef.current && restaurant.latlng) {
+        mapRef.current.animateToRegion({
+          latitude: restaurant.latlng.lat,
+          longitude: restaurant.latlng.lng,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05,
+        }, 300);
+      }
+    }
+  };
+
+  const handleMomentumScrollEnd = (event: any) => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const cardWidth = MAP_CARD_WIDTH + MAP_CARD_MARGIN;
+    const index = Math.round(offsetX / cardWidth);
+    handleCardScroll(index);
+  };
+
+  const handleMapPress = () => {
+    setViewMode('map');
+    // Set initial selection to first restaurant when entering map view
+    if (filteredRestaurantList.length > 0 && !selectedMarkerId) {
+      setSelectedMarkerId(filteredRestaurantList[0]._id);
+    }
+  };
   const handleListPress = () => setViewMode('list');
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
@@ -260,23 +293,19 @@ export default function RestaurantListScreen() {
                 const isSelected = selectedMarkerId === restaurant._id;
                 return (
                   <Marker
-                    key={`${restaurant._id}-${isSelected}`}
+                    key={restaurant._id}
                     coordinate={{
                       latitude: restaurant.latlng.lat,
                       longitude: restaurant.latlng.lng,
                     }}
-                    title={restaurant.name}
-                    description={restaurant.address}
-                    
-                    // image={require('../../../assets/images/default.png')}
+                    // title={restaurant.name}
+                    // description={restaurant.address}
+                    anchor={{ x: 0.5, y: 1 }}
                     image={
-                      
                       isSelected
                         ? require('../../../assets/images/selected.png')
                         : require('../../../assets/images/default.png')
-                      
                     }
-                    anchor={{ x: 0.5, y: 1 }}
                     onPress={() => {
                       setSelectedMarkerId(restaurant._id);
                       // Find index in the filtered list (restaurants with location)
@@ -301,10 +330,7 @@ export default function RestaurantListScreen() {
             <View style={styles.mapCardsOverlay} pointerEvents="box-none">
               <FlatList
                 ref={mapCardsScrollRef}
-                data={restaurantList.filter(
-                  (r) => r.latlng && r.latlng.lat != null && r.latlng.lng != null
-                )}
-                
+                data={filteredRestaurantList}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item) => item._id}
@@ -317,6 +343,8 @@ export default function RestaurantListScreen() {
                   offset: (MAP_CARD_WIDTH + MAP_CARD_MARGIN) * index,
                   index,
                 })}
+                onMomentumScrollEnd={handleMomentumScrollEnd}
+                onScrollEndDrag={handleMomentumScrollEnd}
                 renderItem={({ item: restaurant }) => {
                   const isSelected = selectedMarkerId === restaurant._id;
                   return (
