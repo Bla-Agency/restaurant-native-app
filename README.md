@@ -34,9 +34,9 @@ EXPO_PUBLIC_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
 ### 3. Deployed Preview Links
 **Note**: For the most accurate design review, please run the project locally and scan the QR code, as deployed links may not reflect the very latest changes.
 
-**Android**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+16&updateRuntimeVersion=1.0.0&createdAt=2026-02-22T22%3A41%3A01.425Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=30ce6212-52de-4aa1-99bd-2929833f41d9)
+**Android**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+20&updateRuntimeVersion=1.0.0&createdAt=2026-02-23T21%3A23%3A33.404Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=533356cb-2002-4f26-8fe1-817f91b864b6)
 
-**iOS**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+18&updateRuntimeVersion=1.0.0&createdAt=2026-02-23T16%3A43%3A10.617Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=2f0cb726-f737-46f5-887e-a5853fc26223)
+**iOS**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+20&updateRuntimeVersion=1.0.0&createdAt=2026-02-23T19%3A54%3A14.940Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=d656046d-9d82-4f74-b404-f053b1cce8ba)
 
 ### 4. Run Development Server
 ```bash
