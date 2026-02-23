@@ -36,14 +36,14 @@ const getInitialRegion = (restaurants: Restaurant[]) => {
     (r) => r.latlng && r.latlng.lat !== undefined && r.latlng.lng !== undefined
   );
 
-  if (firstValid && firstValid.latlng) {
-    return {
-      latitude: firstValid.latlng.lat,
-      longitude: firstValid.latlng.lng,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    };
-  }
+  // if (firstValid && firstValid.latlng) {
+  //   return {
+  //     latitude: firstValid.latlng.lat,
+  //     longitude: firstValid.latlng.lng,
+  //     latitudeDelta: 0.0922,
+  //     longitudeDelta: 0.0421,
+  //   };
+  // }
 
   // Fallback to Madrid
   return {
@@ -443,7 +443,8 @@ const styles = StyleSheet.create({
     flexGrow: 0,
   },
   mapCardsScrollContent: {
-    paddingHorizontal: (SCREEN_WIDTH - MAP_CARD_WIDTH) / 2,
+    paddingLeft: Space.s,
+    paddingRight: (SCREEN_WIDTH - MAP_CARD_WIDTH) / 2,
   },
   mapCardContainerOverride: {
     marginBottom: 0,
