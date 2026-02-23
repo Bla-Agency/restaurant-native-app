@@ -169,7 +169,7 @@ For issues:
 4. Test on physical device if emulator fails
 
 ### API Verification
-To ensure full app functionality (editing and comments):
+To ensure full app functionality :
 1. Verify API endpoints are reachable from your network environment.
 2. Check that the provided `.env` variables match the backend configuration.
 3. Ensure authentication headers are active in your test session.
