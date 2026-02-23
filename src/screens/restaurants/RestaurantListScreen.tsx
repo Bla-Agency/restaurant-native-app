@@ -1,4 +1,5 @@
 import { useDeleteRestaurantMutation, useRestaurantsQuery } from '@/api/restaurants';
+import { MapMarker } from '@/components/MapMarker';
 import { RestaurantCard } from '@/components/RestaurantCard';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -11,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Animated, Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RectButton, Swipeable } from 'react-native-gesture-handler';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getUser } from '../../storage/auth';
 const PAGE_SIZE = 10;
@@ -292,27 +293,14 @@ export default function RestaurantListScreen() {
                 if (!restaurant.latlng || restaurant.latlng.lat === undefined || restaurant.latlng.lng === undefined) return null;
                 const isSelected = selectedMarkerId === restaurant._id;
                 return (
-                  <Marker
+                  <MapMarker
                     key={restaurant._id}
-                    coordinate={{
-                      latitude: restaurant.latlng.lat,
-                      longitude: restaurant.latlng.lng,
-                    }}
-                    // title={restaurant.name}
-                    // description={restaurant.address}
-                    anchor={{ x: 0.5, y: 1 }}
-                    image={
-                      isSelected
-                        ? require('../../../assets/images/selected.png')
-                        : require('../../../assets/images/default.png')
-                    }
-                    onPress={() => {
-                      setSelectedMarkerId(restaurant._id);
+                    restaurant={restaurant}
+                    isSelected={isSelected}
+                    onPress={(id: string) => {
+                      setSelectedMarkerId(id);
                       // Find index in the filtered list (restaurants with location)
-                      const filteredList = restaurantList.filter(
-                        (r) => r.latlng && r.latlng.lat != null && r.latlng.lng != null
-                      );
-                      const idx = filteredList.findIndex((r) => r._id === restaurant._id);
+                      const idx = filteredRestaurantList.findIndex((r) => r._id === id);
                       if (idx >= 0 && mapCardsScrollRef.current) {
                         // Use FlatList's scrollToIndex to center the card
                         mapCardsScrollRef.current.scrollToIndex({
