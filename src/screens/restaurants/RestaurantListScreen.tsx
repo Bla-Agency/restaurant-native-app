@@ -304,6 +304,7 @@ export default function RestaurantListScreen() {
                 data={restaurantList.filter(
                   (r) => r.latlng && r.latlng.lat != null && r.latlng.lng != null
                 )}
+                
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item) => item._id}
@@ -336,6 +337,7 @@ export default function RestaurantListScreen() {
                               longitudeDelta: 0.05,
                             }, 500);
                           }
+                          (navigation as any).navigate('RestaurantDetail', { id: restaurant._id });
                         }}
                         containerStyle={styles.mapCardContainerOverride}
                         cardStyle={[styles.mapCardCardOverride, isSelected && styles.mapCardSelected]}

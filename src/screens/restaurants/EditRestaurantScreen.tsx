@@ -382,13 +382,6 @@ const styles = StyleSheet.create({
   formSection: { width: '100%', marginBottom: 24 },
   label: { fontSize: 16, fontWeight: '600', marginBottom: 8, marginTop: 12 },
   input: {
-    // backgroundColor: '#f8f9fa',
-    // borderRadius: 12,
-    // padding: 15,
-    // fontSize: 16,
-    // borderWidth: 1,
-    // borderColor: '#eee',
-    // color: '#000',
     minHeight: 140
   },
   inputError: { borderColor: '#FF3B30', borderWidth: 1.5 },
