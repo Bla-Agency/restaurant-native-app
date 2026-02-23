@@ -24,28 +24,26 @@ npm install
 ```
 
 ### 2. Environment Configuration
-Create `.env` file in project root:
+Create a `.env` file in the project root with the following variables:
 ```env
-You need a google api key to use the location feature in create restaurant page
-Check .env.example for required variables
-
-
+EXPO_PUBLIC_API_URL=https://react-native-challenge-api.tailor-hub.com/api
+EXPO_PUBLIC_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
 ```
-### 3. Deployed links for both
-### Note. Safe way to check latest design always run project on machine and scan a qr because deployed links may not reflect latest changes
-```bash
-android: https://expo.dev/preview/update?message=fix+design+issues+deployment+16&updateRuntimeVersion=1.0.0&createdAt=2026-02-22T22%3A41%3A01.425Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=30ce6212-52de-4aa1-99bd-2929833f41d9
+*Note: A Google Maps API key is required for the location search functionality in the Create Restaurant screen.*
 
+### 3. Deployed Preview Links
+**Note**: For the most accurate design review, please run the project locally and scan the QR code, as deployed links may not reflect the very latest changes.
 
-ios:https://expo.dev/preview/update?message=fix+design+issues+deployment+16&updateRuntimeVersion=1.0.0&createdAt=2026-02-22T22%3A37%3A35.974Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=2c5a5831-c5da-4ba2-a478-8aaa8fdedade
+**Android**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+16&updateRuntimeVersion=1.0.0&createdAt=2026-02-22T22%3A41%3A01.425Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=30ce6212-52de-4aa1-99bd-2929833f41d9)
 
+**iOS**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+16&updateRuntimeVersion=1.0.0&createdAt=2026-02-22T22%3A37%3A35.974Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=2c5a5831-c5da-4ba2-a478-8aaa8fdedade)
 
-### 3. Run Development Server
+### 4. Run Development Server
 ```bash
 npx expo start
 ```
 
-### 4. Test on Device
+### 5. Test on Device
 - **Android**: Scan QR code with Expo Go app
 - **iOS**: Scan QR code with Camera app (iOS 13+)
 
@@ -67,10 +65,8 @@ npx expo start
 
 ## Common Issues & Solutions
 
-- **Status Bar**: Status bar icons may not appear on some Android emulators
-
-### Status Bar Not Visible
-If status bar icons don't appear:
+### Status Bar Visibility
+If status bar icons don't appear (common on some Android emulators):
 1. Restart emulator/device completely
 2. Check emulator settings: Extended controls → Display → Enable status bar
 3. Run: `adb shell settings put global policy_control null`
@@ -172,12 +168,12 @@ For issues:
 3. Ensure all dependencies are installed
 4. Test on physical device if emulator fails
 
-### Backend Troubleshooting
-If experiencing issues with restaurant editing or missing comment names:
-1. Verify backend API endpoints are properly implemented
-2. Check API response structure matches expected format
-3. Ensure authentication headers are properly sent
-4. Test API endpoints directly (e.g., using Postman) to confirm functionality
+### API Verification
+To ensure full app functionality (editing and comments):
+1. Verify API endpoints are reachable from your network environment.
+2. Check that the provided `.env` variables match the backend configuration.
+3. Ensure authentication headers are active in your test session.
+4. Use tools like Postman to verify individual endpoint responses if needed.
 
 ## Version Information
 - React Native: 0.74.x (via Expo SDK 50+)
