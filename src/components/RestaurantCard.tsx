@@ -48,8 +48,8 @@ export const RestaurantCard = ({ data, isFavorite, hideComments, variant = 'defa
 
   // Truncate address to 30 characters
   const truncateAddress = (address: string): string => {
-    if (address.length <= 30) return address;
-    return address.substring(0, 30) + '...';
+    if (address.length <= 26) return address;
+    return address.substring(0, 26) + '...';
   };
 
   const truncatedAddress = displayAddress ? truncateAddress(displayAddress) : null;
