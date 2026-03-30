@@ -34,9 +34,9 @@ EXPO_PUBLIC_API_KEY=YOUR_GOOGLE_MAPS_API_KEY
 ### 3. Deployed Preview Links
 **Note**: For the most accurate design review, please run the project locally and scan the QR code, as deployed links may not reflect the very latest changes.
 
-**Android**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+20&updateRuntimeVersion=1.0.0&createdAt=2026-02-23T21%3A23%3A33.404Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=533356cb-2002-4f26-8fe1-817f91b864b6)
+**Android**: [Preview Link](https://expo.dev/preview/update/expo-go?message=fix-restaurant-card-minor-issue&updateRuntimeVersion=1.0.0&createdAt=2026-03-29T22%3A14%3A12.717Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=9a9123a5-a8a0-4b5d-b668-f9d6f79709cf)
 
-**iOS**: [Preview Link](https://expo.dev/preview/update?message=fix+design+issues+deployment+20&updateRuntimeVersion=1.0.0&createdAt=2026-02-23T19%3A54%3A14.940Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=d656046d-9d82-4f74-b404-f053b1cce8ba)
+**iOS**: [Preview Link](https://expo.dev/preview/update/expo-go?message=fix-restaurant-card-minor-issue&updateRuntimeVersion=1.0.0&createdAt=2026-03-29T22%3A12%3A51.843Z&slug=exp&projectId=a3e15141-51d1-4ea1-bdaf-5f5fbaffc8e0&group=143fdcc1-b184-406a-8608-2850292c1a6f)
 
 ### 4. Run Development Server
 ```bash
